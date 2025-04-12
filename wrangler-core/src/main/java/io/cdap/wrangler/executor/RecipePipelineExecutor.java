@@ -44,7 +44,8 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 /**
- * The class <code>RecipePipelineExecutor</code> compiles the recipe and executes the directives.
+ * The class <code>RecipePipelineExecutor</code> compiles the recipe and
+ * executes the directives.
  */
 public final class RecipePipelineExecutor implements RecipePipeline<Row, StructuredRecord, ErrorRecord> {
 
@@ -63,7 +64,8 @@ public final class RecipePipelineExecutor implements RecipePipeline<Row, Structu
   }
 
   /**
-   * Invokes each directives destroy method to perform any cleanup required by each individual directive.
+   * Invokes each directives destroy method to perform any cleanup required by
+   * each individual directive.
    */
   @Override
   public void close() {
@@ -82,7 +84,7 @@ public final class RecipePipelineExecutor implements RecipePipeline<Row, Structu
   /**
    * Executes the pipeline on the input.
    *
-   * @param rows List of Input record of type I.
+   * @param rows   List of Input record of type I.
    * @param schema Schema to which the output should be mapped.
    * @return Parsed output list of record of type O
    */
@@ -108,10 +110,11 @@ public final class RecipePipelineExecutor implements RecipePipeline<Row, Structu
     List<Row> results = new ArrayList<>();
     int i = 0;
     int directiveIndex = 0;
-    // Initialize schema with input schema from TransientStore if running in service env (design-time) / testing env
+    // Initialize schema with input schema from TransientStore if running in service
+    // env (design-time) / testing env
     boolean schemaManagementEnabled = context != null && context.isSchemaManagementEnabled();
-    Schema inputSchema = schemaManagementEnabled ?
-      context.getTransientStore().get(TransientStoreKeys.INPUT_SCHEMA) : null;
+    Schema inputSchema = schemaManagementEnabled ? context.getTransientStore().get(TransientStoreKeys.INPUT_SCHEMA)
+        : null;
 
     List<DirectiveOutputSchemaGenerator> outputSchemaGenerators = new ArrayList<>();
     if (schemaManagementEnabled && inputSchema != null) {
@@ -128,6 +131,7 @@ public final class RecipePipelineExecutor implements RecipePipeline<Row, Structu
         if (context != null) {
           context.getTransientStore().reset(TransientVariableScope.LOCAL);
         }
+        context.getTransientStore().set(TransientVariableScope.LOCAL, "rowsLeft", rows.size() - i - 1);
 
         List<Row> cumulativeRows = rows.subList(i, i + 1);
         directiveIndex = 0;
@@ -145,7 +149,7 @@ public final class RecipePipelineExecutor implements RecipePipeline<Row, Structu
             } catch (ReportErrorAndProceed e) {
               messages.add(String.format("%s (ecode: %d)", e.getMessage(), e.getCode()));
               collector
-                .add(new ErrorRecord(rows.subList(i, i + 1).get(0), String.join(",", messages), e.getCode(), true));
+                  .add(new ErrorRecord(rows.subList(i, i + 1).get(0), String.join(",", messages), e.getCode(), true));
               cumulativeRows = new ArrayList<>();
               break;
             }
@@ -154,8 +158,8 @@ public final class RecipePipelineExecutor implements RecipePipeline<Row, Structu
         } catch (ErrorRowException e) {
           messages.add(String.format("%s", e.getMessage()));
           collector
-            .add(new ErrorRecord(rows.subList(i, i + 1).get(0), String.join(",", messages), e.getCode(),
-              e.isShownInWrangler()));
+              .add(new ErrorRecord(rows.subList(i, i + 1).get(0), String.join(",", messages), e.getCode(),
+                  e.isShownInWrangler()));
         }
         ++i;
       }
@@ -165,7 +169,7 @@ public final class RecipePipelineExecutor implements RecipePipeline<Row, Structu
     // Schema generation
     if (schemaManagementEnabled && inputSchema != null) {
       context.getTransientStore().set(TransientVariableScope.GLOBAL, TransientStoreKeys.OUTPUT_SCHEMA,
-                                        getOutputSchema(inputSchema, outputSchemaGenerators));
+          getOutputSchema(inputSchema, outputSchemaGenerators));
     }
     return results;
   }
@@ -188,7 +192,7 @@ public final class RecipePipelineExecutor implements RecipePipeline<Row, Structu
   }
 
   private Schema getOutputSchema(Schema inputSchema, List<DirectiveOutputSchemaGenerator> outputSchemaGenerators)
-    throws RecipeException {
+      throws RecipeException {
     Schema schema = inputSchema;
     for (DirectiveOutputSchemaGenerator outputSchemaGenerator : outputSchemaGenerators) {
       try {

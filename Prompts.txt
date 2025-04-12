@@ -1,0 +1,58 @@
+/*
+ * Copyright © 2017-2019 Cask Data, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
+
+
+# Prompts Used for Enhancing CDAP Wrangler with ByteSize and TimeDuration Parsing
+
+## Grammar + ANTLR
+
+1. How do I add new token types like BYTE_SIZE and TIME_DURATION to an ANTLR4 grammar for a DSL?
+2. What’s the best way to define units like KB, MB, ms, and s in ANTLR lexer rules with fragments?
+3. How do I make ANTLR accept values like '1.5MB' or '200ms' as valid arguments in directive syntax?
+4. After modifying Directives.g4, how do I regenerate the Java parser and lexer classes in a Maven project?
+
+## Token Parsing (Java)
+
+5. How do I write a Java class that parses strings like "1.5MB" into bytes? How to deal with units and decimal points?
+6. What’s the cleanest way to convert a time duration like “2.1s” into milliseconds or nanoseconds in Java?
+7. Show me a Java class that extends a base Token class and implements parsing logic for byte sizes.
+8. What’s the difference between binary (1024-based) and decimal (1000-based) byte conversions, and which should I use?
+
+## API + Core Updates
+
+9. How do I add new token types to an enum in Java and update usage definitions accordingly in an existing DSL parser?
+10. In a visitor-based ANTLR parser implementation, how do I add support for new token types in visit methods?
+11. What’s the correct way to store and retrieve custom tokens like ByteSize or TimeDuration in a TokenGroup?
+
+## Aggregate Directive Logic
+
+12. How do I implement an aggregate directive that computes the total and average of numeric values across all rows in CDAP Wrangler?
+13. How do I accumulate data across rows in a CDAP directive using ExecutorContext?
+14. How do I convert stored bytes and durations to user-specified output units (like MB, seconds) during finalization?
+15. What’s a good way to structure the define() method to accept multiple column names and optional unit arguments?
+
+## Testing
+
+16. How do I write JUnit tests for a class that parses units like '10KB' and '2.5MB' into bytes?
+17. How do I test an ANTLR grammar to ensure invalid syntax like '15XY' or '2minutes' is rejected?
+18. How can I test a custom Wrangler directive using TestingRig and assert results using JUnit?
+19. How do I write tests for both total and average aggregations over input rows containing unit strings?
+
+## Build / CI / Misc
+
+20. How can I verify my ANTLR grammar changes didn’t break any existing directives?
+21. What are typical Maven commands to compile and test a multi-module Java project like CDAP Wrangler?
+22. How do I document new custom parsers and directives in the README with examples?

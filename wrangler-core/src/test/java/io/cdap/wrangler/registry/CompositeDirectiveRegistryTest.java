@@ -79,8 +79,8 @@ public class CompositeDirectiveRegistryTest {
 
     public TestDirectiveRegistry() throws InstantiationException, IllegalAccessException {
       registry.put("my-test", DirectiveInfo.fromUser(MyTest.class,
-                                                     new ArtifactId("dummy", new ArtifactVersion("1.0"),
-                                                                    ArtifactScope.USER)));
+          new ArtifactId("dummy", new ArtifactVersion("1.0"),
+              ArtifactScope.USER)));
     }
 
     @Override
@@ -114,9 +114,8 @@ public class CompositeDirectiveRegistryTest {
   @Test
   public void testIteratorUsage() throws Exception {
     DirectiveRegistry registry = new CompositeDirectiveRegistry(
-      SystemDirectiveRegistry.INSTANCE,
-      new TestDirectiveRegistry()
-    );
+        SystemDirectiveRegistry.INSTANCE,
+        new TestDirectiveRegistry());
 
     Iterator<DirectiveInfo> iterator = registry.list(Contexts.SYSTEM).iterator();
     int count = 0;
@@ -124,7 +123,7 @@ public class CompositeDirectiveRegistryTest {
       iterator.next();
       count++;
     }
-    Assert.assertEquals(85, count);
+    Assert.assertEquals(88, count);
 
     registry.reload("");
 
@@ -134,7 +133,7 @@ public class CompositeDirectiveRegistryTest {
       iterator.next();
       count++;
     }
-    Assert.assertEquals(85, count);
+    Assert.assertEquals(88, count);
 
   }
 }

@@ -1,0 +1,50 @@
+BUILD SUCCESS:
+
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for Wrangler 4.12.0-SNAPSHOT:
+[INFO]
+[INFO] Wrangler ........................................... SUCCESS [  7.329 s]
+[INFO] Wrangler API ....................................... SUCCESS [ 10.146 s]
+[INFO] Wrangler REST Protocol Classes ..................... SUCCESS [  3.728 s]
+[INFO] Wrangler Core ...................................... SUCCESS [02:08 min]
+[INFO] Wrangler Storage ................................... SUCCESS [  3.105 s]
+[INFO] Wrangler Service ................................... SUCCESS [01:10 min]
+[INFO] Wrangler Testing Framework ......................... SUCCESS [  2.066 s]
+[INFO] Wrangler Transform ................................. SUCCESS [ 41.194 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  04:29 min
+[INFO] Finished at: 2025-04-13T03:48:53+05:30
+[INFO] ------------------------------------------------------------------------
+
+
+TEST SUCCESS:
+
+-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+Running io.cdap.wrangler.PreconditionTest
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.432 sec
+
+Results :
+
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for Wrangler 4.12.0-SNAPSHOT:
+[INFO]
+[INFO] Wrangler ........................................... SUCCESS [  4.278 s]
+[INFO] Wrangler API ....................................... SUCCESS [  6.737 s]
+[INFO] Wrangler REST Protocol Classes ..................... SUCCESS [  2.585 s]
+[INFO] Wrangler Core ...................................... SUCCESS [01:51 min]
+[INFO] Wrangler Storage ................................... SUCCESS [  2.865 s]
+[INFO] Wrangler Service ................................... SUCCESS [ 15.550 s]
+[INFO] Wrangler Testing Framework ......................... SUCCESS [  1.092 s]
+[INFO] Wrangler Transform ................................. SUCCESS [  4.017 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  02:29 min
+[INFO] Finished at: 2025-04-13T03:51:46+05:30
+[INFO] ------------------------------------------------------------------------

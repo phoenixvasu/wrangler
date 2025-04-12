@@ -24,12 +24,14 @@ import io.cdap.wrangler.api.LazyNumber;
 import io.cdap.wrangler.api.TokenGroup;
 import io.cdap.wrangler.api.parser.Bool;
 import io.cdap.wrangler.api.parser.BoolList;
+import io.cdap.wrangler.api.parser.ByteSizeList;
 import io.cdap.wrangler.api.parser.ColumnName;
 import io.cdap.wrangler.api.parser.ColumnNameList;
 import io.cdap.wrangler.api.parser.Numeric;
 import io.cdap.wrangler.api.parser.NumericList;
 import io.cdap.wrangler.api.parser.Text;
 import io.cdap.wrangler.api.parser.TextList;
+import io.cdap.wrangler.api.parser.TimeDurationList;
 import io.cdap.wrangler.api.parser.Token;
 import io.cdap.wrangler.api.parser.TokenDefinition;
 import io.cdap.wrangler.api.parser.TokenType;
@@ -58,8 +60,8 @@ public class MapArguments implements Arguments {
     int required = definition.getTokens().size() - definition.getOptionalTokensCount();
     if ((required > group.size() - 1) || ((group.size() - 1) > definition.getTokens().size())) {
       throw new DirectiveParseException(
-        definition.getDirectiveName(), String.format("Improper usage of directive '%s', usage - '%s'",
-                                                     definition.getDirectiveName(), definition.toString()));
+          definition.getDirectiveName(), String.format("Improper usage of directive '%s', usage - '%s'",
+              definition.getDirectiveName(), definition.toString()));
     }
 
     List<TokenDefinition> specifications = definition.getTokens();
@@ -90,6 +92,18 @@ public class MapArguments implements Arguments {
               tokens.put(specification.name(), new BoolList(values));
               pos = pos + 1;
               break;
+            } else if (specification.type() == TokenType.BYTESIZE_LIST && token.type() == TokenType.BYTESIZE) {
+              List<String> values = new ArrayList<>();
+              values.add(((Text) token).value());
+              tokens.put(specification.name(), new ByteSizeList(values));
+              pos = pos + 1;
+              break;
+            } else if (specification.type() == TokenType.TIMEDURATION_LIST && token.type() == TokenType.TIMEDURATION) {
+              List<String> values = new ArrayList<>();
+              values.add(((Text) token).value());
+              tokens.put(specification.name(), new TimeDurationList(values));
+              pos = pos + 1;
+              break;
             } else if (specification.type() == TokenType.TEXT_LIST && token.type() == TokenType.TEXT) {
               List<String> values = new ArrayList<>();
               values.add(((Text) token).value());
@@ -98,10 +112,9 @@ public class MapArguments implements Arguments {
               break;
             } else {
               throw new DirectiveParseException(
-                String.format("Expected argument '%s' to be of type '%s', but it is of type '%s' - %s",
-                              specification.name(), specification.type().name(),
-                              token.type().name(), group.getSourceInfo().toString())
-              );
+                  String.format("Expected argument '%s' to be of type '%s', but it is of type '%s' - %s",
+                      specification.name(), specification.type().name(),
+                      token.type().name(), group.getSourceInfo().toString()));
             }
           } else {
             tokens.put(specification.name(), token);
@@ -122,8 +135,10 @@ public class MapArguments implements Arguments {
   /**
    * Returns the number of tokens that are mapped to arguments.
    *
-   * <p>The optional arguments specified during the <code>UsageDefinition</code>
-   * are not included in the size if they are not present in the tokens parsed.</p>
+   * <p>
+   * The optional arguments specified during the <code>UsageDefinition</code>
+   * are not included in the size if they are not present in the tokens parsed.
+   * </p>
    *
    * @return number of tokens parsed, excluding optional tokens if not present.
    */
@@ -136,13 +151,16 @@ public class MapArguments implements Arguments {
    * This method checks if there exists a token named <code>name</code> registered
    * with this object.
    *
-   * The <code>name</code> is expected to the same as specified in the <code>UsageDefinition</code>.
-   * There are two reason why the <code>name</code> might not exists in this object :
+   * The <code>name</code> is expected to the same as specified in the
+   * <code>UsageDefinition</code>.
+   * There are two reason why the <code>name</code> might not exists in this
+   * object :
    *
    * <ul>
-   *   <li>When an token is defined to be optional, the user might not have specified the
-   *   token, hence the token would not exist in the argument.</li>
-   *   <li>User has specified invalid <code>name</code>.</li>
+   * <li>When an token is defined to be optional, the user might not have
+   * specified the
+   * token, hence the token would not exist in the argument.</li>
+   * <li>User has specified invalid <code>name</code>.</li>
    * </ul>
    *
    * @param name associated with the token.
@@ -158,8 +176,10 @@ public class MapArguments implements Arguments {
    * specified in the argument. This method will attempt to convert the token
    * into the expected return type <code>T</code>.
    * <p>
-   * <p>If the <code>name</code> doesn't exist in this object, then this
-   * method is expected to return <code>null</code></p>
+   * <p>
+   * If the <code>name</code> doesn't exist in this object, then this
+   * method is expected to return <code>null</code>
+   * </p>
    *
    * @param name of the token to be retrieved.
    * @return object that extends <code>Token</code>.
@@ -170,11 +190,14 @@ public class MapArguments implements Arguments {
   }
 
   /**
-   * Each token is defined as one of the types defined in the class {@link TokenType}.
-   * When the directive is parsed into token, the type of the token is passed through.
+   * Each token is defined as one of the types defined in the class
+   * {@link TokenType}.
+   * When the directive is parsed into token, the type of the token is passed
+   * through.
    *
    * @param name associated with the token.
-   * @return <code>TokenType</code> associated with argument <code>name</code>, else null.
+   * @return <code>TokenType</code> associated with argument <code>name</code>,
+   *         else null.
    */
   @Override
   public TokenType type(String name) {
@@ -193,10 +216,12 @@ public class MapArguments implements Arguments {
 
   /**
    * Returns the source column number these arguments were parsed from.
-   * <p>It takes the start position of the directive as the column number.</p>
+   * <p>
+   * It takes the start position of the directive as the column number.
+   * </p>
    *
    * @return the start of the column number for the start of the directive
-   * these arguments contain.
+   *         these arguments contain.
    */
   @Override
   public int column() {
@@ -208,7 +233,7 @@ public class MapArguments implements Arguments {
    * the user. It returns the <code>String</code> representation of the directive.
    *
    * @return <code>String</code> object representing the original directive
-   * as specified by the user.
+   *         as specified by the user.
    */
   @Override
   public String source() {
@@ -219,7 +244,7 @@ public class MapArguments implements Arguments {
    * Returns <code>JsonElement</code> representation of this object.
    *
    * @return an instance of <code>JsonElement</code>object representing all the
-   * named tokens held within this object.
+   *         named tokens held within this object.
    */
   @Override
   public JsonElement toJson() {

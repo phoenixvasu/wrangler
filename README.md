@@ -1,3 +1,33 @@
+# 🧩 CDAP Wrangler - Enhanced with ByteSize and TimeDuration Parsers
+
+This fork of the CDAP Wrangler adds **native support** for parsing byte size and time duration units, enabling easier processing and aggregation of data size and time-based columns in Wrangler recipes.
+
+---
+
+## 🚀 New Features
+
+### ✅ Byte Size Parser
+Supports parsing strings like:
+- `"1KB"`, `"10MB"`, `"2.5GB"`, `"1024B"`
+
+These are automatically converted to a **canonical byte representation**.
+
+### ✅ Time Duration Parser
+Supports parsing strings like:
+- `"500ms"`, `"2s"`, `"1.5m"`, `"3h"`
+
+These are converted into **nanoseconds** internally for consistency.
+
+---
+
+## 🆕 New Directive: `aggregate-stats`
+
+This new directive performs aggregation (sum/average) over byte size and time duration columns.
+
+### **Syntax:**
+```wrangler
+aggregate-stats :<size_column> :<time_column> <output_size_column> <output_time_column> [<unit_size>] [<unit_time>] [average]
+
 # Data Prep
 
 ![cm-available](https://cdap-users.herokuapp.com/assets/cm-available.svg)
@@ -216,3 +246,4 @@ Cask is a trademark of Cask Data, Inc. All rights reserved.
 
 Apache, Apache HBase, and HBase are trademarks of The Apache Software Foundation. Used with
 permission. No endorsement by The Apache Software Foundation is implied by the use of these marks.
+

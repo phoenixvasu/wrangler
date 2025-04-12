@@ -64,6 +64,10 @@ directive
     | stringList
     | numberRanges
     | properties
+    | byteSize
+    | byteSizeList
+    | timeDuration
+    | timeDurationList
   )*?
   ;
 
@@ -115,6 +119,30 @@ identifier
  : Identifier
  ;
 
+byteSizeList
+ : byteSize (',' byteSize)*
+ ;
+
+timeDurationList
+ : timeDuration (',' timeDuration)*
+ ;
+
+timeDuration
+ : TIME_DURATION
+ ;
+
+byteSize
+ : BYTE_SIZE
+ ;
+
+BYTE_SIZE
+ : Number+ BYTE_UNIT
+ ;
+
+TIME_DURATION
+ : Number+ TIME_UNIT
+ ;
+
 properties
  : 'prop' ':' OBrace (propertyList)+  CBrace
  | 'prop' ':' OBrace OBrace (propertyList)+ CBrace { notifyErrorListeners("Too many start paranthesis"); }
@@ -128,7 +156,7 @@ propertyList
  ;
 
 property
- : Identifier '=' ( text | number | bool )
+ : Identifier '=' ( text | number | bool | byteSize | timeDuration )
  ;
 
 numberRanges
@@ -294,6 +322,22 @@ UnicodeEscape
 
 fragment
    HexDigit : ('0'..'9'|'a'..'f'|'A'..'F') ;
+
+fragment BYTE_UNIT
+ : 'B'
+ | 'KB'
+ | 'MB'
+ | 'GB'
+ | 'TB'
+ ;
+
+fragment TIME_UNIT
+ : 'ms'
+ | 's'
+ | 'm'
+ | 'h'
+ | 'd'
+ ;
 
 Comment
  : ('//' ~[\r\n]* | '/*' .*? '*/' | '--' ~[\r\n]* ) -> skip
